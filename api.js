@@ -6,6 +6,7 @@ const write = (items) => localStorage.setItem(key, JSON.stringify(items));
 const copy = (source, target) => {
     target.task = source.task;
     target.completed = source.completed;
+    target.dateDue = source.dateDue;
     return target;
 };
 

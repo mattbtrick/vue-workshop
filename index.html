@@ -5,6 +5,12 @@
 <head>
     <meta charset="UTF-8">
     <title>VueJS Workshop</title>
+    <link type="text/css" rel="stylesheet" href="http://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="http://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"
+    />
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
@@ -32,11 +38,14 @@
     <script type="text/html" id="task-form-template">
       <form v-on:submit.prevent="handleSubmit">
         <input type="text" v-focus v-model="taskText" v-bind:placeholder="placeholder" />
+        <date-picker v-model="dateDue" />
         <input type="submit" />
       </form>
     </script>
 
-    <script src="https://unpkg.com/vue@2.2.4" type="text/javascript"></script>
+    <script src="http://unpkg.com/@babel/polyfill@latest/dist/polyfill.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/vue@2.6.9" type="text/javascript"></script>
+    <script src="http://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js" type="text/javascript"></script>
     <script src="api.js" type="text/javascript"></script>
     <script src="code.js" type="text/javascript"></script>
 </body>

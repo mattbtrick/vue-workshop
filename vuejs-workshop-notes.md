@@ -8,7 +8,7 @@
     }
 
     ```
-2. Add task object to data in code.js.
+2. Add task array to data in code.js.
     `tasks: []`
 3. Add getTask method to code.js.
     ```javascript

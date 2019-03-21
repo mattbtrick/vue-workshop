@@ -1,6 +1,6 @@
 Vue.directive('focus', {
     inserted: function(el) {
-        el.focus()
+        el.focus();
     }
 })
 
@@ -34,7 +34,14 @@ window.vm = new Vue({
                 api.get(id, function(task) {
                     self.tasks.push(task);
                     self.newTask = null;
-                });
+                })
+            });
+        },
+        deleteTask: function(index) {
+            var self = this;
+            var task = self.tasks[index];
+            api.delete(task.id, function() {
+                self.tasks.splice(index, 1);
             });
         }
     }

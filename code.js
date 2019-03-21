@@ -1,15 +1,15 @@
-Vue.directive('focus', {
-  inserted: function (el) {
+Vue.directive("focus", {
+  inserted: function(el) {
     el.focus();
   }
 });
 
-Vue.filter('truncate', function (value, maxLength) {
+Vue.filter("truncate", function(value, maxLength) {
   if (value.length <= maxLength) {
     return value;
   }
 
-  return value.substring(0, maxLength) + '...';
+  return value.substring(0, maxLength) + "...";
 });
 
 var taskFormComponent = {
@@ -19,104 +19,104 @@ var taskFormComponent = {
       default: null
     }
   },
-  data: function () {
+  data: function() {
     var self = this;
 
     return {
-      taskText: self.task ? self.task.task : ''
+      taskText: self.task ? self.task.task : ""
     };
   },
   computed: {
-    isAdd: function () {
+    isAdd: function() {
       var self = this;
       return self.task === null;
     },
-    placeholder: function () {
+    placeholder: function() {
       var self = this;
-      return self.isAdd ? 'Add a task' : 'Edit this task';
+      return self.isAdd ? "Add a task" : "Edit this task";
     }
   },
   methods: {
-    handleSubmit: function () {
+    handleSubmit: function() {
       var self = this;
-      self.$emit('submit', self.taskText);
+      self.$emit("submit", self.taskText);
 
       if (self.isAdd) {
-        self.taskText = '';
+        self.taskText = "";
       }
     }
   },
-  template: '#task-form-template'
+  template: "#task-form-template"
 };
 
 window.vm = new Vue({
-    el: '#app',
-    components: {
-      taskForm: taskFormComponent
-    },
-    data: function() {
-        return {
-            heading: 'To Do List',
-            tasks: [],
-            editingTask: null,
-            searchValue: null
-        };
-    },
-    created: function() {
+  el: "#app",
+  components: {
+    taskForm: taskFormComponent
+  },
+  data: function() {
+    return {
+      heading: "To Do List",
+      tasks: [],
+      editingTask: null
+    };
+  },
+  created: function() {
+    var self = this;
+
+    api.getList(function(items) {
+      self.tasks = items;
+    });
+  },
+  methods: {
+    addTask: function(text) {
       var self = this;
 
-      api.getList(function (items) {
-        self.tasks = items;
+      var newTask = {
+        completed: false,
+        dateAdded: new Date(),
+        task: text
+      };
+
+      api.create(newTask, function(newId) {
+        newTask.id = newId;
+        self.tasks.push(newTask);
       });
     },
-    methods: {
-      addNewTask: function (text) {
-        var self = this;
+    deleteTask: function(task, index) {
+      var self = this;
 
-        var newTask = {
-          completed: false,
-          dateAdded: new Date(),
-          task: text
-        };
-
-        api.create(newTask, function (newId) {
-          newTask.id = newId;
-          self.tasks.push(newTask);
-          self.newTaskText = '';
-        });
-      },
-      deleteTask: function (task, index) {
-        var self = this;
-
-        api.delete(task.id, function () {
-          self.tasks.splice(index, 1);
-        });
-      },
-      setEditingTask: function (task) {
-        var self = this;
-        self.editingTask = task;
-        self.editTaskText = task.task;
-      },
-      editTask: function (text) {
-        var self = this;
-        self.editingTask.task = text;
-
-        api.update(self.editingTask, function () {
-          self.editingTask = null;
-        });
-      }
+      api.delete(task.id, function() {
+        self.tasks.splice(index, 1);
+      });
     },
-    computed: {
-        filteredTasks: function() {
-            var self = this
+    setEditingTask: function(task) {
+      var self = this;
+      self.editingTask = task;
+      self.editTaskText = task.task;
+    },
+    editTask: function(text) {
+      var self = this;
+      self.editingTask.task = text;
 
-            if (!self.searchValue) {
-                return self.tasks;
-            }
-
-            return self.tasks.filter(function(value) {
-                return value.task.toLowerCase().includes(self.searchValue.toLowerCase());
-            });
-        }
+      api.update(self.editingTask, function() {
+        self.editingTask = null;
+      });
     }
+  },
+  computed: {
+    filteredTasks: function() {
+      var self = this;
+
+      if (!self.searchValue) {
+        return self.tasks;
+      }
+
+      return self.tasks.filter(function(value) {
+        return value.task
+          .toLowerCase()
+          .includes(self.searchValue.toLowerCase());
+      });
+    }
+  }
 });

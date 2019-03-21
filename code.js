@@ -1,9 +1,8 @@
 Vue.directive('focus', {
-    inserted: function(el) {
-        el.focus();
-    }
-})
-
+  inserted: function (el) {
+    el.focus();
+  }
+});
 
 window.vm = new Vue({
     el: '#app',
@@ -11,38 +10,53 @@ window.vm = new Vue({
         return {
             heading: 'To Do List',
             tasks: [],
-            newTask: null
+            newTaskText: '',
+            editingTask: null,
+            editTaskText: ''
         };
     },
     created: function() {
-        this.getTasks();
+      var self = this;
+
+      api.getList(function (items) {
+        self.tasks = items;
+      });
     },
     methods: {
-        getTasks: function() {
-            var self = this;
-            api.getList(function(tasks) {
-                self.tasks = tasks;
-            });
-        },
-        addTask: function() {
-            var self = this;
-            var task = {
-                task: self.newTask
-            };
+      addNewTask: function () {
+        var self = this;
 
-            api.create(task, function(id) {
-                api.get(id, function(task) {
-                    self.tasks.push(task);
-                    self.newTask = null;
-                })
-            });
-        },
-        deleteTask: function(index) {
-            var self = this;
-            var task = self.tasks[index];
-            api.delete(task.id, function() {
-                self.tasks.splice(index, 1);
-            });
-        }
+        var newTask = {
+          completed: false,
+          dateAdded: new Date(),
+          task: self.newTaskText
+        };
+
+        api.create(newTask, function (newId) {
+          newTask.id = newId;
+          self.tasks.push(newTask);
+          self.newTaskText = '';
+        });
+      },
+      deleteTask: function (task, index) {
+        var self = this;
+
+        api.delete(task.id, function () {
+          self.tasks.splice(index, 1);
+        });
+      },
+      setEditingTask: function (task) {
+        var self = this;
+        self.editingTask = task;
+        self.editTaskText = task.task;
+      },
+      editTask: function () {
+        var self = this;
+        self.editingTask.task = self.editTaskText;
+
+        api.update(self.editingTask, function () {
+          self.editingTask = null;
+        });
+      }
     }
 });

@@ -12,14 +12,25 @@
 
     <div id="app" v-cloak>
         <h2>{{heading}}</h2>
-        <form v-on:submit.prevent="addTask">
-            <input type="text" required placeholder="New task" v-focus v-model="newTask">
-            <input type="submit" value="Add Task">
+
+        <form v-on:submit.prevent="addNewTask">
+          <input type="text" v-focus v-model="newTaskText" placeholder="Add new task" />
+          <input type="submit" />
         </form>
+
         <ol>
-            <li v-for="(t, i) in tasks" v-bind:key="t.id">
-                {{ t.task }} <button v-on:click="deleteTask(i)">Delete</button>
-            </li>
+          <li v-for="(t, i) in tasks" v-bind:key="t.id">
+            <div v-if="editingTask !== t">
+              {{t.task}}
+              <button v-on:click="setEditingTask(t)">Edit</button>
+              <button v-on:click="deleteTask(t, i)">Delete</button>
+            </div>
+
+            <form v-else v-on:submit.prevent="editTask">
+              <input type="text" v-model="editTaskText" placeholder="Edit task" />
+              <input type="submit" />
+            </form>
+          </li>
         </ol>
     </div>
 

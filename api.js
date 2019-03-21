@@ -4,9 +4,6 @@ const read = () => JSON.parse(localStorage.getItem(key) || "[]");
 const write = (items) => localStorage.setItem(key, JSON.stringify(items));
 
 const copy = (source, target) => {
-    source = source || {};
-    target = target || {};
-    
     target.task = source.task;
     target.completed = source.completed;
     target.dateDue = source.dateDue;

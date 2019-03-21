@@ -105,10 +105,57 @@ var taskFormComponent = {
   template: "#task-form-template"
 };
 
+var taskItemComponent = {
+  components: {
+    taskForm: taskFormComponent,
+    taskItem: taskItemComponent
+  },
+  props: {
+    task: {
+      type: Object,
+      required: true
+    },
+    isEditing: {
+      type: Boolean,
+      required: true
+    }
+  },
+  methods: {
+    deleteTask: function() {
+      this.$emit("delete-task", this.task);
+    },
+    saveTask: function(formTask) {
+      var self = this;
+      self.task.task = formTask.task;
+      api.update(self.task, function() {});
+      this.$emit("quit-editing");
+    },
+    completeTask: function() {
+      var self = this;
+      this.task.completed = !this.task.completed;
+      api.update(self.task, function() {});
+    },
+    editTask: function() {
+      var self = this;
+      self.$emit("edit-task", self.task);
+    }
+  },
+  computed: {
+    daysOld: function() {
+      var today = new Date();
+      var started = new Date(this.task.dateAdded);
+      var msPerDay = 1000 * 60 * 60 * 24;
+      return Math.round((today - started) / msPerDay);
+    }
+  },
+  template: "#task-item-template"
+};
+
 window.vm = new Vue({
   el: "#app",
   components: {
-    taskForm: taskFormComponent
+    taskForm: taskFormComponent,
+    taskItem: taskItemComponent
   },
   data: function() {
     return {
@@ -156,20 +203,19 @@ window.vm = new Vue({
       self.editingTask = task;
       self.editTaskText = task.task;
     },
-    editTask: function(formData) {
+    editTask: function(task) {
       var self = this;
 
-      self.editingTask.task = formData.task;
-      self.editingTask.dateDue = formData.dateDue;
-
-      api.update(self.editingTask, function() {
-        self.editingTask = null;
-      });
+      self.editingTask = task;
     },
     completeTask: function(task) {
       var self = this;
       task.completed = !task.completed;
       api.update(task, function() {});
+    },
+    quitEditing: function () {
+      var self = this;
+      self.editingTask = null;
     }
   },
   computed: {

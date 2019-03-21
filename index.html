@@ -21,7 +21,7 @@
         <ol>
           <li v-for="(t, i) in tasks" v-bind:key="t.id">
             <div v-if="editingTask !== t">
-              {{t.task}}
+              {{t.task | truncate(20) }}
               <button v-on:click="setEditingTask(t)">Edit</button>
               <button v-on:click="deleteTask(t, i)">Delete</button>
             </div>

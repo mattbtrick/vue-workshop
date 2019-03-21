@@ -4,6 +4,14 @@ Vue.directive('focus', {
   }
 });
 
+Vue.filter('truncate', function (value, maxLength) {
+  if (value.length <= maxLength) {
+    return value;
+  }
+
+  return value.substring(0, maxLength) + '...';
+});
+
 window.vm = new Vue({
     el: '#app',
     data: function() {

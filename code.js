@@ -59,6 +59,7 @@ window.vm = new Vue({
             heading: 'To Do List',
             tasks: [],
             editingTask: null,
+            searchValue: null
         };
     },
     created: function() {
@@ -104,5 +105,18 @@ window.vm = new Vue({
           self.editingTask = null;
         });
       }
+    },
+    computed: {
+        filteredTasks: function() {
+            var self = this
+
+            if (!self.searchValue) {
+                return self.tasks;
+            }
+
+            return self.tasks.filter(function(value) {
+                return value.task.toLowerCase().includes(self.searchValue.toLowerCase());
+            });
+        }
     }
 });

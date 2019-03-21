@@ -12,11 +12,12 @@
 
     <div id="app" v-cloak>
         <h2>{{heading}}</h2>
-
+        <input type="text" placeholder="Search..." v-model="searchValue">
+        <hr>
         <task-form v-on:submit="addNewTask"></task-form>
 
         <ol>
-          <li v-for="(t, i) in tasks" v-bind:key="t.id">
+          <li v-for="(t, i) in filteredTasks" v-bind:key="t.id">
             <div v-if="editingTask !== t">
               {{t.task | truncate(20) }}
               <button v-on:click="setEditingTask(t)">Edit</button>

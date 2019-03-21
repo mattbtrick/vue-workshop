@@ -9,7 +9,7 @@
     <div id="app" v-cloak>
       <h2>{{ heading }}</h2>
 
-      <task-form v-on:submit="addNewTask"></task-form>
+      <task-form v-on:submit="addTask"></task-form>
 
       <ol>
         <li v-for="(t, i) in tasks" v-bind:key="t.id">

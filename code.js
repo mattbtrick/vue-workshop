@@ -64,16 +64,8 @@ window.vm = new Vue({
   created: function() {
     var self = this;
 
-    var newTask = {
-      completed: false,
-      dateAdded: new Date(),
-      task: self.newTaskText
-    };
-
-    api.create(newTask, function(newId) {
-      newTask.id = newId;
-      self.tasks.push(newTask);
-      self.newTaskText = "";
+    api.getList(function(items) {
+      self.tasks = items;
     });
   },
   methods: {
@@ -89,7 +81,6 @@ window.vm = new Vue({
       api.create(newTask, function(newId) {
         newTask.id = newId;
         self.tasks.push(newTask);
-        self.newTaskText = "";
       });
     },
     deleteTask: function(task, index) {

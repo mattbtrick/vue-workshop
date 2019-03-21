@@ -1,3 +1,7 @@
+[v-cloak] {
+  display: none;
+}
+
 #app {
     width: 500px;
     margin: auto;

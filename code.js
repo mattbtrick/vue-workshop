@@ -12,15 +12,53 @@ Vue.filter('truncate', function (value, maxLength) {
   return value.substring(0, maxLength) + '...';
 });
 
+var taskFormComponent = {
+  props: {
+    task: {
+      type: Object,
+      default: null
+    }
+  },
+  data: function () {
+    var self = this;
+
+    return {
+      taskText: self.task ? self.task.task : ''
+    };
+  },
+  computed: {
+    isAdd: function () {
+      var self = this;
+      return self.task === null;
+    },
+    placeholder: function () {
+      var self = this;
+      return self.isAdd ? 'Add a task' : 'Edit this task';
+    }
+  },
+  methods: {
+    handleSubmit: function () {
+      var self = this;
+      self.$emit('submit', self.taskText);
+
+      if (self.isAdd) {
+        self.taskText = '';
+      }
+    }
+  },
+  template: '#task-form-template'
+};
+
 window.vm = new Vue({
     el: '#app',
+    components: {
+      taskForm: taskFormComponent
+    },
     data: function() {
         return {
             heading: 'To Do List',
             tasks: [],
-            newTaskText: '',
             editingTask: null,
-            editTaskText: ''
         };
     },
     created: function() {
@@ -31,13 +69,13 @@ window.vm = new Vue({
       });
     },
     methods: {
-      addNewTask: function () {
+      addNewTask: function (text) {
         var self = this;
 
         var newTask = {
           completed: false,
           dateAdded: new Date(),
-          task: self.newTaskText
+          task: text
         };
 
         api.create(newTask, function (newId) {
@@ -58,9 +96,9 @@ window.vm = new Vue({
         self.editingTask = task;
         self.editTaskText = task.task;
       },
-      editTask: function () {
+      editTask: function (text) {
         var self = this;
-        self.editingTask.task = self.editTaskText;
+        self.editingTask.task = text;
 
         api.update(self.editingTask, function () {
           self.editingTask = null;

@@ -13,10 +13,7 @@
     <div id="app" v-cloak>
         <h2>{{heading}}</h2>
 
-        <form v-on:submit.prevent="addNewTask">
-          <input type="text" v-focus v-model="newTaskText" placeholder="Add new task" />
-          <input type="submit" />
-        </form>
+        <task-form v-on:submit="addNewTask"></task-form>
 
         <ol>
           <li v-for="(t, i) in tasks" v-bind:key="t.id">
@@ -26,13 +23,17 @@
               <button v-on:click="deleteTask(t, i)">Delete</button>
             </div>
 
-            <form v-else v-on:submit.prevent="editTask">
-              <input type="text" v-model="editTaskText" placeholder="Edit task" />
-              <input type="submit" />
-            </form>
+            <task-form v-else v-on:submit="editTask" v-bind:task="t"></task-form>
           </li>
         </ol>
     </div>
+
+    <script type="text/html" id="task-form-template">
+      <form v-on:submit.prevent="handleSubmit">
+        <input type="text" v-focus v-model="taskText" v-bind:placeholder="placeholder" />
+        <input type="submit" />
+      </form>
+    </script>
 
     <script src="https://unpkg.com/vue@2.2.4" type="text/javascript"></script>
     <script src="api.js" type="text/javascript"></script>

@@ -20,7 +20,7 @@
       <h2>{{ heading }}</h2>
       <input type="text" placeholder="Search..." v-model="searchValue" />
       <hr />
-      <task-form v-on:submit="addNewTask"></task-form>
+      <task-form v-on:submit="addTask"></task-form>
 
       <ol>
         <li v-for="(t, i) in filteredTasks" v-bind:key="t.id">

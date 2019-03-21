@@ -1,31 +1,44 @@
 <!DOCTYPE html>
-
 <html>
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>VueJS Workshop</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-</head>
-
-<body>
-
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
     <div id="app" v-cloak>
-        <h2>{{heading}}</h2>
-        <form v-on:submit.prevent="addTask">
-            <input type="text" required placeholder="New task" v-focus v-model="newTask">
-            <input type="submit" value="Add Task">
-        </form>
-        <ol>
-            <li v-for="t in tasks" v-bind:key="t.id">
-                {{ t.task }}
-            </li>
-        </ol>
+      <h2>{{ heading }}</h2>
+      <form v-on:submit.prevent="addTask">
+        <input
+          type="text"
+          required
+          placeholder="New task"
+          v-focus
+          v-model="newTask"
+        />
+        <input type="submit" value="Add Task" />
+      </form>
+      <ol>
+        <li v-for="t in tasks" v-bind:key="t.id">
+          {{ t.task }}
+        </li>
+      </ol>
     </div>
 
-    <script src="https://unpkg.com/vue@2.2.4" type="text/javascript"></script>
+    <script
+      src="http://unpkg.com/@babel/polyfill@latest/dist/polyfill.js"
+      type="text/javascript"
+    ></script>
+    <script src="https://unpkg.com/vue@2.6.9" type="text/javascript"></script>
+    <script
+      src="http://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="http://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"
+      type="text/javascript"
+    ></script>
     <script src="api.js" type="text/javascript"></script>
     <script src="code.js" type="text/javascript"></script>
-</body>
-
+  </body>
 </html>

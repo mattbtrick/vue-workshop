@@ -117,14 +117,14 @@ window.vm = new Vue({
     });
   },
   methods: {
-    addTask: function(text) {
+    addTask: function(task) {
       var self = this;
 
       var newTask = {
         completed: false,
         dateAdded: new Date(),
-        task: text.task,
-        dateDue: text.dateDue
+        task: task.task,
+        dateDue: task.dateDue
       };
 
       api.create(newTask, function(newId) {
@@ -144,16 +144,11 @@ window.vm = new Vue({
       self.editingTask = task;
       self.editTaskText = task.task;
     },
-    setEditingTask: function(task) {
-      var self = this;
-      self.editingTask = task;
-      self.editTaskText = task.task;
-    },
-    editTask: function(formData) {
+    editTask: function(task) {
       var self = this;
 
-      self.editingTask.task = formData.task;
-      self.editingTask.dateDue = formData.dateDue;
+      self.editingTask.task = task.task;
+      self.editingTask.dateDue = task.dateDue;
       api.update(self.editingTask, function() {
         self.editingTask = null;
       });

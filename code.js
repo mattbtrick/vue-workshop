@@ -128,20 +128,19 @@ window.vm = new Vue({
     });
   },
   methods: {
-    addNewTask: function(formData) {
+    addTask: function(task) {
       var self = this;
 
       var newTask = {
         completed: false,
         dateAdded: new Date(),
-        task: formData.task,
-        dateDue: formData.dateDue
+        task: task.task,
+        dateDue: task.dateDue
       };
 
       api.create(newTask, function(newId) {
         newTask.id = newId;
         self.tasks.push(newTask);
-        self.newTaskText = "";
       });
     },
     deleteTask: function(task, index) {
@@ -156,12 +155,11 @@ window.vm = new Vue({
       self.editingTask = task;
       self.editTaskText = task.task;
     },
-    editTask: function(formData) {
+    editTask: function(task) {
       var self = this;
 
-      self.editingTask.task = formData.task;
-      self.editingTask.dateDue = formData.dateDue;
-
+      self.editingTask.task = task.task;
+      self.editingTask.dateDue = task.dateDue;
       api.update(self.editingTask, function() {
         self.editingTask = null;
       });

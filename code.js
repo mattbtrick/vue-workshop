@@ -23,7 +23,7 @@ window.vm = new Vue({
     });
   },
   methods: {
-    addNewTask: function() {
+    addTask: function() {
       var self = this;
 
       var newTask = {

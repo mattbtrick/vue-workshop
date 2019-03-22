@@ -106,7 +106,8 @@ window.vm = new Vue({
     return {
       heading: "To Do List",
       tasks: [],
-      editingTask: null
+      editingTask: null,
+      searchValue: ""
     };
   },
   created: function() {

@@ -193,23 +193,16 @@ window.vm = new Vue({
     deleteTask: function(task, index) {
       var self = this;
 
-      api.delete(task.id, function() {
-        self.tasks.splice(index, 1);
+      api.delete(task.id, function(deleted, index) {
+        if(deleted){
+          self.tasks.splice(index, 1);
+        }
       });
-    },
-    setEditingTask: function(task) {
-      var self = this;
-      self.editingTask = task;
-      self.editTaskText = task.task;
     },
     editTask: function(task) {
       var self = this;
 
-      self.editingTask.task = task.task;
-      self.editingTask.dateDue = task.dateDue;
-      api.update(self.editingTask, function() {
-        self.editingTask = null;
-      });
+      self.editingTask = task;
     },
     completeTask: function(task) {
       var self = this;

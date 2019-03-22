@@ -10,6 +10,8 @@ const copy = (source, target) => {
     target.task = source.task;
     target.completed = source.completed;
     target.dateDue = source.dateDue;
+    target.dateAdded = source.dateAdded;
+
     return target;
 };
 
@@ -113,11 +115,11 @@ api.delete = (id, callback) => {
     const index = items.findIndex(i => i.id === id);
 
     if (index === -1) {
-      callback(false);
+      callback(false, index);
     }
 
     items.splice(index, 1);
     write(items);
-    callback(true);
+    callback(true, index);
   }, delay);
 };
